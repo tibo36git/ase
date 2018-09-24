@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include "lib_try_throw.h"
+
+struct ctx_s ctx;
 
 static int
 mul(int depth) {
@@ -13,16 +16,14 @@ mul(int depth) {
             if (i) 
                 return i * mul(depth+1);
             else
-                return 0;
+                throw(&ctx, 0);
     }
+    return 0;
 }
 
-int
-main()
-{
+int main() {
     int product;
-
     printf("A list of int, please\n"); 
-    product = mul(0);
+    product = try(&ctx, mul, 0);
     printf("product = %d\n", product); 
 }
